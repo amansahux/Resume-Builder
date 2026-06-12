@@ -1,4 +1,4 @@
-import { JWTPayload } from "@/types/user.interface";
+import { JWTPayload, verifyTokenResponse } from "@/types/user.interface";
 import jwt from "jsonwebtoken"
 
 export const generateToken = (payload: JWTPayload): string => {
@@ -7,6 +7,11 @@ export const generateToken = (payload: JWTPayload): string => {
     })
 }
 
-export const verifyToken = (token: string): unknown => {
-    return jwt.verify(token, process.env.JWT_TOKEN!)
-}
+export const verifyToken = (
+  token: string
+): verifyTokenResponse => {
+  return jwt.verify(
+    token,
+    process.env.JWT_TOKEN!
+  ) as verifyTokenResponse;
+};

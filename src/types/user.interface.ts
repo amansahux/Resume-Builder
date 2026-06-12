@@ -1,4 +1,4 @@
-import { Document } from "mongoose"
+import { Document, Model, Types } from "mongoose"
 
 export interface IUser {
     _id: string,
@@ -25,4 +25,8 @@ export interface LoginBody {
 export interface JWTPayload {
     userId: string,
     email?: string
+}
+export interface verifyTokenResponse {
+    userId: Types.ObjectId
+    email?:string
 }
