@@ -35,5 +35,5 @@ userSchema.pre("save", function () {
 userSchema.methods.comparePassword =  function (candidtePassword:string) {
     return  bcrypt.compareSync(candidtePassword , this.password)
 }
-const userModal = mongoose.model("users", userSchema)
+const userModal = mongoose.models.users || mongoose.model("users", userSchema)
 export default userModal

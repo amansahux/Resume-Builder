@@ -69,7 +69,7 @@ export default function LoginPage() {
           </p>
 
           {serverError && (
-            <div className="mb-6 p-4 rounded-xl bg-red-950/30 border border-red-500/20 text-red-400 text-sm font-light">
+            <div className="mb-6 p-4 uppercase rounded-xl bg-red-950/30 border border-red-500/20 text-red-400 text-sm font-light">
               {serverError}
             </div>
           )}
