@@ -30,3 +30,17 @@ export interface verifyTokenResponse {
     userId: Types.ObjectId
     email?:string
 }
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  mobile: string;
+}
+
+export interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  login: (userData: User) => void;
+  logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
+}
