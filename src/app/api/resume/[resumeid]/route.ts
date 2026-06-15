@@ -4,15 +4,15 @@ import resumeModel from "@/models/resume.model";
 import { IResponse } from "@/types/response.interface";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, { params }: { params: Promise<{ resumeId: string }> }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ resumeid: string }> }) {
 
     try {
         await connectToDatabase()
 
         const userId = await getCurrentUser()
-        const { resumeId } = await params
+        const { resumeid } = await params
 
-        const resume = await resumeModel.findOne({ _id: resumeId, user_id: userId });
+        const resume = await resumeModel.findOne({ _id: resumeid, user_id: userId });
         if (!resume)
             return NextResponse.json<IResponse>(
                 {
@@ -44,24 +44,26 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ resu
 
 
 }
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ resumeId: string }> }) {
+export async function PATCH(req: NextRequest, { params }: { params: Promise<{ resumeid: string }> }) {
     try {
         await connectToDatabase()
 
         const userId = await getCurrentUser()
-        const { resumeId } = await params
+        const { resumeid } = await params
         const body = await req.json();
-        const updatedResume = resumeModel.findByIdAndUpdate({
-            _id: resumeId,
-            user_id: userId,
-        },
+        const updatedResume = await resumeModel.findOneAndUpdate(
+            {
+                _id: resumeid,
+                user_id: userId,
+            },
             {
                 $set: body,
             },
             {
                 new: true,
                 runValidators: true,
-            })
+            }
+        );
         if (!updatedResume)
             return NextResponse.json<IResponse>(
                 {

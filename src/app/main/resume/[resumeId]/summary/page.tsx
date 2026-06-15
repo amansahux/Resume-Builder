@@ -1,33 +1,83 @@
 "use client";
 
-import React from "react";
-import { useParams } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { useWorkspace } from "../workspace-context";
+import SectionCard from "../components/SectionCard";
+import PageNavigation from "../components/PageNavigation";
+import LoadingSkeleton from "../components/LoadingSkeleton";
 
-export default function PersonalInfoPage() {
+export default function SummaryPage() {
+  const { resume, loading, saveResume } = useWorkspace();
+  const router = useRouter();
   const params = useParams();
   const resumeId = params?.resumeId as string;
 
+  const [summaryText, setSummaryText] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (resume?.summary) {
+      setSummaryText(resume.summary);
+    }
+  }, [resume]);
+
+  const handleSaveAndContinue = async () => {
+    try {
+      setSaving(true);
+      setError(null);
+      await saveResume({ summary: summaryText });
+      router.push(`/main/resume/${resumeId}/review`);
+    } catch (err: any) {
+      setError(err.message || "Failed to save summary");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return <LoadingSkeleton type="form" />;
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-zinc-950 text-white font-sans">
-      <div className="max-w-md w-full bg-zinc-900 border border-zinc-800 rounded-2xl p-8 space-y-6 text-center shadow-xl">
-        <div className="w-12 h-12 rounded-full bg-brand-500/10 text-brand-500 mx-auto flex items-center justify-center">
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
-        </div>
-        <div className="space-y-2">
-          <h1 className="text-2xl font-serif tracking-tight">Personal Information</h1>
-          <p className="text-sm text-zinc-400">
-            Workspace initialized for Resume ID: <span className="font-mono text-brand-400">{resumeId}</span>
-          </p>
-        </div>
-        <div className="pt-4">
-          <div className="p-4 bg-zinc-800/50 rounded-xl text-xs text-left border border-zinc-700/50 space-y-2">
-            <p className="font-semibold text-zinc-300">Resume Creation Complete</p>
-            <p className="text-zinc-400">Next Step: Collect fullname, email, mobile, and social links to complete the executive heading.</p>
+    <div className="max-w-3xl mx-auto space-y-6">
+      <SectionCard
+        title="Professional Summary"
+        description="Craft an executive summary to introduce yourself. Keep it brief, punchy, and rich in action verbs and impact metrics."
+      >
+        {error && (
+          <div className="p-3.5 text-xs text-red-800 bg-red-100 border border-red-200 rounded-lg">
+            {error}
           </div>
+        )}
+
+        <div className="space-y-2 relative">
+          <div className="flex justify-between items-center mb-1">
+            <label htmlFor="summary-textarea" className="block text-xs font-semibold uppercase tracking-wider text-text-secondary">
+              Professional Biography
+            </label>
+            <span className="text-xs text-text-muted font-mono">
+              {summaryText.length} characters
+            </span>
+          </div>
+
+          <textarea
+            id="summary-textarea"
+            rows={8}
+            value={summaryText}
+            onChange={(e) => setSummaryText(e.target.value)}
+            placeholder="e.g. Results-driven Senior Software Engineer with 6+ years of experience leading engineering teams and building high-performance web applications. Expertise in React, Next.js, and Node.js. Proven track record of optimizing system architecture to improve scalability and load speeds..."
+            className="w-full px-4 py-3.5 rounded-xl border border-brand-400/50 bg-white/70 text-text-primary placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all duration-200 text-sm resize-y leading-relaxed"
+          />
         </div>
-      </div>
+
+        <PageNavigation
+          onSave={handleSaveAndContinue}
+          isSubmitting={saving}
+          canSkip={true}
+        />
+      </SectionCard>
     </div>
   );
 }

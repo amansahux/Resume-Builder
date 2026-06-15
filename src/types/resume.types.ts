@@ -6,7 +6,7 @@ export interface IPersonalInfo {
     mobile: string;
     location: string;
     github: string;
-    linkedIn: string;
+    linkedIn?: string;
     portfolio?: string;
 }
 
@@ -21,8 +21,8 @@ export interface IWorkExperience {
 export interface IProjects {
     title: string;
     description: string;
-    githubUrl: string;
-    liveUrl: string;
+    githubUrl?: string;
+    liveUrl?: string;
     techStack: string[];
 }
 

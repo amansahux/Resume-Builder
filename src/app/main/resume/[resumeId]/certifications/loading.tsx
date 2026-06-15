@@ -1,11 +1,8 @@
-import React from 'react'
+"use client";
 
-type Props = {}
+import React from "react";
+import LoadingSkeleton from "../components/LoadingSkeleton";
 
-function loading({}: Props) {
-  return (
-    <div>loading</div>
-  )
+export default function Loading() {
+  return <LoadingSkeleton type="form" />;
 }
-
-export default loading

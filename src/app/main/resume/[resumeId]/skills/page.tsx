@@ -1,33 +1,71 @@
 "use client";
 
-import React from "react";
-import { useParams } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { useWorkspace } from "../workspace-context";
+import SectionCard from "../components/SectionCard";
+import PageNavigation from "../components/PageNavigation";
+import SkillInput from "../components/SkillInput";
+import LoadingSkeleton from "../components/LoadingSkeleton";
 
-export default function PersonalInfoPage() {
+export default function SkillsPage() {
+  const { resume, loading, saveResume } = useWorkspace();
+  const router = useRouter();
   const params = useParams();
   const resumeId = params?.resumeId as string;
 
+  const [skills, setSkills] = useState<string[]>([]);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (resume?.skills) {
+      setSkills(resume.skills);
+    }
+  }, [resume]);
+
+  const handleSaveAndContinue = async () => {
+    if (skills.length === 0) {
+      setError("Please add at least one core skill before continuing.");
+      return;
+    }
+    try {
+      setSaving(true);
+      setError(null);
+      await saveResume({ skills });
+      router.push(`/main/resume/${resumeId}/certifications`);
+    } catch (err: any) {
+      setError(err.message || "Failed to save skills");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return <LoadingSkeleton type="form" />;
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-zinc-950 text-white font-sans">
-      <div className="max-w-md w-full bg-zinc-900 border border-zinc-800 rounded-2xl p-8 space-y-6 text-center shadow-xl">
-        <div className="w-12 h-12 rounded-full bg-brand-500/10 text-brand-500 mx-auto flex items-center justify-center">
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
-        </div>
-        <div className="space-y-2">
-          <h1 className="text-2xl font-serif tracking-tight">Personal Information</h1>
-          <p className="text-sm text-zinc-400">
-            Workspace initialized for Resume ID: <span className="font-mono text-brand-400">{resumeId}</span>
-          </p>
-        </div>
-        <div className="pt-4">
-          <div className="p-4 bg-zinc-800/50 rounded-xl text-xs text-left border border-zinc-700/50 space-y-2">
-            <p className="font-semibold text-zinc-300">Resume Creation Complete</p>
-            <p className="text-zinc-400">Next Step: Collect fullname, email, mobile, and social links to complete the executive heading.</p>
+    <div className="max-w-3xl mx-auto space-y-6">
+      <SectionCard
+        title="Professional Skills"
+        description="Detail your technological competencies, tools, programming languages, and soft skills."
+      >
+        {error && (
+          <div className="p-3.5 text-xs text-red-800 bg-red-100 border border-red-200 rounded-lg animate-fade-in">
+            {error}
           </div>
+        )}
+
+        <div className="space-y-4">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-text-secondary">
+            Skills Inventory
+          </label>
+          <SkillInput value={skills} onChange={(newSkills) => { setSkills(newSkills); setError(null); }} />
         </div>
-      </div>
+
+        <PageNavigation onSave={handleSaveAndContinue} isSubmitting={saving} />
+      </SectionCard>
     </div>
   );
 }

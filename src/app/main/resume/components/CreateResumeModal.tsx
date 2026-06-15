@@ -205,7 +205,7 @@ export default function CreateResumeModal({
                 type="button"
                 disabled={isSubmitting}
                 onClick={() => setExperienceLevel("FRESHER")}
-                className={`relative z-10 flex-1 py-2 text-xs font-medium tracking-wide uppercase rounded-lg transition-colors duration-300 focus:outline-none ${
+                className={`relative cursor-pointer z-10 flex-1 py-2 text-xs font-medium tracking-wide uppercase rounded-lg transition-colors duration-300 focus:outline-none ${
                   experienceLevel === "FRESHER"
                     ? "text-black font-semibold"
                     : "text-brand-500/80 hover:text-black"
@@ -218,7 +218,7 @@ export default function CreateResumeModal({
                 type="button"
                 disabled={isSubmitting}
                 onClick={() => setExperienceLevel("MID_LEVEL")}
-                className={`relative z-10 flex-1 py-2 text-xs font-medium tracking-wide uppercase rounded-lg transition-colors duration-300 focus:outline-none ${
+                className={`relative cursor-pointer z-10 flex-1 py-2 text-xs font-medium tracking-wide uppercase rounded-lg transition-colors duration-300 focus:outline-none ${
                   experienceLevel === "MID_LEVEL"
                     ? "text-black font-semibold"
                     : "text-brand-500/80 hover:text-black"
@@ -231,7 +231,7 @@ export default function CreateResumeModal({
                 type="button"
                 disabled={isSubmitting}
                 onClick={() => setExperienceLevel("EXPERIENCED")}
-                className={`relative z-10 flex-1 py-2 text-xs font-medium tracking-wide uppercase rounded-lg transition-colors duration-300 focus:outline-none ${
+                className={`relative cursor-pointer z-10 flex-1 py-2 text-xs font-medium tracking-wide uppercase rounded-lg transition-colors duration-300 focus:outline-none ${
                   experienceLevel === "EXPERIENCED"
                     ? "text-black font-semibold"
                     : "text-brand-500/80 hover:text-black"
@@ -246,7 +246,7 @@ export default function CreateResumeModal({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full mt-2 py-4 bg-brand-500 text-white rounded-xl font-medium text-sm tracking-wide uppercase hover:bg-black transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-black/20 flex items-center justify-center space-x-2"
+            className="w-full mt-2 cursor-pointer py-4 bg-brand-500 text-white rounded-xl font-medium text-sm tracking-wide uppercase hover:bg-black transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-black/20 flex items-center justify-center space-x-2"
           >
             {isSubmitting ? (
               <>
