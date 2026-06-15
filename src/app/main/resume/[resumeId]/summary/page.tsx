@@ -68,7 +68,7 @@ export default function SummaryPage() {
             value={summaryText}
             onChange={(e) => setSummaryText(e.target.value)}
             placeholder="e.g. Results-driven Senior Software Engineer with 6+ years of experience leading engineering teams and building high-performance web applications. Expertise in React, Next.js, and Node.js. Proven track record of optimizing system architecture to improve scalability and load speeds..."
-            className="w-full px-4 py-3.5 rounded-xl border border-brand-400/50 bg-white/70 text-text-primary placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all duration-200 text-sm resize-y leading-relaxed"
+            className="w-full px-4 py-3.5 rounded-xl border border-brand-400/50 bg-white/70 text-text-primary placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all duration-200 text-sm resize-y leading-relaxed scrollbar-none scrollbar-hide"
           />
         </div>
 

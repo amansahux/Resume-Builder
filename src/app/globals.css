@@ -28,3 +28,7 @@ body {
   color: #3A322D;
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
+.scrollbar-hide  ::-webkit-scrollbar{
+  display: none;
+  color: blueviolet;
+}
