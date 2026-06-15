@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
     try {
         await connectToDatabase();
-
+        let title = "Untitled Resume";
         let jobTitle = "";
         let level = "FRESHER";
         let userId: Types.ObjectId | null = null;
@@ -20,15 +20,18 @@ export async function POST(req: NextRequest) {
                     message: "User not found",
                 }, { status: 404 });
             }
+
             const body = await req.json();
             if (body.jobTitle) jobTitle = body.jobTitle;
             if (body.experienceLevel) level = body.experienceLevel;
+            if (body.title) title = body.title;
         } catch (e) {
-           console.error("error in creating resume" , e)
+            console.error("error in creating resume", e)
         }
 
         const newResume = await resumeModel.create({
             user_id: userId,
+            title,
             jobTitle,
             level,
             summary: "",

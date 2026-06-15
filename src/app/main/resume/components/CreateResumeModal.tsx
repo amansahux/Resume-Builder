@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { createResumeAPI } from "@/apis/resume";
 
 interface CreateResumeModalProps {
   isOpen: boolean;
@@ -10,10 +11,15 @@ interface CreateResumeModalProps {
 
 type ExperienceLevel = "FRESHER" | "MID_LEVEL" | "EXPERIENCED";
 
-export default function CreateResumeModal({ isOpen, onClose }: CreateResumeModalProps) {
+export default function CreateResumeModal({
+  isOpen,
+  onClose,
+}: CreateResumeModalProps) {
   const router = useRouter();
+  const [title, setTitle] = useState("");
   const [jobTitle, setJobTitle] = useState("");
-  const [experienceLevel, setExperienceLevel] = useState<ExperienceLevel>("FRESHER");
+  const [experienceLevel, setExperienceLevel] =
+    useState<ExperienceLevel>("FRESHER");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -61,34 +67,23 @@ export default function CreateResumeModal({ isOpen, onClose }: CreateResumeModal
     setError(null);
 
     try {
-      // TODO: CALL EXISTING BACKEND API THAT CREATES A BLANK RESUME
-      // Sending: jobTitle, experienceLevel
-      const response = await fetch("/api/resume/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          jobTitle,
-          experienceLevel,
-        }),
+      const res = await createResumeAPI({
+        title: title,
+        jobTitle: jobTitle,
+        level: experienceLevel,
       });
-
-      const result = await response.json();
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || "Failed to create resume");
+      if (res.success) {
+        onClose();
+        const resumeId = res.data?._id;
+        if (!resumeId) {
+          throw new Error("No resume ID returned from server");
+        }
+        router.push(`/main/resume/${res.data._id}/personalInfo`);
       }
-
-      // TODO: RECEIVE resumeId and REDIRECT AUTOMATICALLY
-      const resumeId = result.data?._id;
-      if (!resumeId) {
-        throw new Error("No resume ID returned from server");
-      }
-
-      router.push(`/main/resume/${resumeId}/personalInfo`);
-    } catch (err: any) {
-      setError(err.message || "An error occurred while creating your resume.");
+    } catch (error: any) {
+      setError(
+        error.message || "An error occurred while creating your resume.",
+      );
       setIsSubmitting(false);
     }
   };
@@ -110,20 +105,34 @@ export default function CreateResumeModal({ isOpen, onClose }: CreateResumeModal
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 p-2 rounded-full text-brand-500/70 hover:text-black hover:bg-brand-300/30 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
+          className="absolute top-6 cursor-pointer right-6 p-2 rounded-full text-brand-500/70 hover:text-black hover:bg-brand-300/30 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500/40"
           aria-label="Close modal"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1.5}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 
         <div className="mb-8">
-          <h2 id="modal-title" className="text-3xl font-serif tracking-tight text-black mb-2">
+          <h2
+            id="modal-title"
+            className="text-3xl font-serif tracking-tight text-black mb-2"
+          >
             Begin Your Masterpiece
           </h2>
           <p className="text-sm text-brand-500/80 leading-relaxed font-sans">
-            Define your aspiration. Let our elite AI engine curate a custom professional document tailored to your industry standards.
+            Define your aspiration. Let our elite AI engine curate a custom
+            professional document tailored to your industry standards.
           </p>
         </div>
 
@@ -136,11 +145,30 @@ export default function CreateResumeModal({ isOpen, onClose }: CreateResumeModal
 
           {/* Job Title Field */}
           <div className="space-y-2">
-            <label htmlFor="job-title" className="block text-xs font-semibold uppercase tracking-wider text-brand-500/90">
-              Desired Job Title
+            <label
+              htmlFor="job-title"
+              className="block text-xs font-semibold uppercase tracking-wider text-brand-500/90"
+            >
+              Title
             </label>
             <input
               ref={inputRef}
+              id="title"
+              type="text"
+              required
+              disabled={isSubmitting}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Untitled Resume"
+              className="w-full px-4 py-3.5 text-sm uppercase rounded-xl border border-brand-400/50 bg-white/70 text-black placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all duration-200"
+            />
+            <label
+              htmlFor="job-title"
+              className="block text-xs font-semibold uppercase tracking-wider text-brand-500/90"
+            >
+              Desired Job Title
+            </label>
+            <input
               id="job-title"
               type="text"
               required
@@ -148,7 +176,7 @@ export default function CreateResumeModal({ isOpen, onClose }: CreateResumeModal
               value={jobTitle}
               onChange={(e) => setJobTitle(e.target.value)}
               placeholder="e.g. Frontend Developer"
-              className="w-full px-4 py-3.5 text-sm rounded-xl border border-brand-400/50 bg-white/70 text-black placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all duration-200"
+              className="w-full px-4 py-3.5 text-sm uppercase rounded-xl border border-brand-400/50 bg-white/70 text-black placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all duration-200"
             />
           </div>
 
@@ -168,8 +196,8 @@ export default function CreateResumeModal({ isOpen, onClose }: CreateResumeModal
                     experienceLevel === "FRESHER"
                       ? "4px"
                       : experienceLevel === "MID_LEVEL"
-                      ? "calc(33.33% + 2px)"
-                      : "calc(66.66% + 0px)",
+                        ? "calc(33.33% + 2px)"
+                        : "calc(66.66% + 0px)",
                 }}
               />
 
@@ -178,7 +206,9 @@ export default function CreateResumeModal({ isOpen, onClose }: CreateResumeModal
                 disabled={isSubmitting}
                 onClick={() => setExperienceLevel("FRESHER")}
                 className={`relative z-10 flex-1 py-2 text-xs font-medium tracking-wide uppercase rounded-lg transition-colors duration-300 focus:outline-none ${
-                  experienceLevel === "FRESHER" ? "text-black font-semibold" : "text-brand-500/80 hover:text-black"
+                  experienceLevel === "FRESHER"
+                    ? "text-black font-semibold"
+                    : "text-brand-500/80 hover:text-black"
                 }`}
               >
                 Fresher
@@ -189,7 +219,9 @@ export default function CreateResumeModal({ isOpen, onClose }: CreateResumeModal
                 disabled={isSubmitting}
                 onClick={() => setExperienceLevel("MID_LEVEL")}
                 className={`relative z-10 flex-1 py-2 text-xs font-medium tracking-wide uppercase rounded-lg transition-colors duration-300 focus:outline-none ${
-                  experienceLevel === "MID_LEVEL" ? "text-black font-semibold" : "text-brand-500/80 hover:text-black"
+                  experienceLevel === "MID_LEVEL"
+                    ? "text-black font-semibold"
+                    : "text-brand-500/80 hover:text-black"
                 }`}
               >
                 Mid Level
@@ -200,7 +232,9 @@ export default function CreateResumeModal({ isOpen, onClose }: CreateResumeModal
                 disabled={isSubmitting}
                 onClick={() => setExperienceLevel("EXPERIENCED")}
                 className={`relative z-10 flex-1 py-2 text-xs font-medium tracking-wide uppercase rounded-lg transition-colors duration-300 focus:outline-none ${
-                  experienceLevel === "EXPERIENCED" ? "text-black font-semibold" : "text-brand-500/80 hover:text-black"
+                  experienceLevel === "EXPERIENCED"
+                    ? "text-black font-semibold"
+                    : "text-brand-500/80 hover:text-black"
                 }`}
               >
                 Experienced
@@ -216,9 +250,24 @@ export default function CreateResumeModal({ isOpen, onClose }: CreateResumeModal
           >
             {isSubmitting ? (
               <>
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
                 </svg>
                 <span>Curating Workspace...</span>
               </>

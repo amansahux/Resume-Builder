@@ -18,7 +18,7 @@ export function middleware(req: NextRequest) {
 
     if (token && isAuthRoute) {
         return NextResponse.redirect(
-            new URL("/main", req.url)
+            new URL("/main/resume", req.url)
         );
     }
 

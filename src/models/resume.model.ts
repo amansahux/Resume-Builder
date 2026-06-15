@@ -7,6 +7,10 @@ const resumeSchema = new mongoose.Schema<IResume>({
         ref: "users",
         required: true,
     },
+    title: {
+        type: String,
+        default: "Untitled Resume",
+    },
     jobTitle: {
         type: String,
         default: "",
@@ -29,11 +33,19 @@ const resumeSchema = new mongoose.Schema<IResume>({
             github: String,
             portfolio: String,
         },
-        default: {},
+        default: {
+            fullname: "",
+            email: "",
+            mobile: "",
+            location: "",
+            github: "",
+            portfolio: ""
+        },
     },
     education: {
         type: [
             {
+                _id: false,
                 institute: String,
                 degree: String,
                 startDate: String,
@@ -45,6 +57,7 @@ const resumeSchema = new mongoose.Schema<IResume>({
     workExperience: {
         type: [
             {
+                _id: false,
                 company: String,
                 position: String,
                 startDate: String,
@@ -57,6 +70,7 @@ const resumeSchema = new mongoose.Schema<IResume>({
     projects: {
         type: [
             {
+                _id: false,
                 title: String,
                 description: String,
                 techStack: [String],
@@ -74,6 +88,15 @@ const resumeSchema = new mongoose.Schema<IResume>({
         type: [String],
         default: [],
     },
+    completionPercentage: {
+        type: Number,
+        default: 0
+    },
+    status: {
+        type: String,
+        enum: ["DRAFT", "COMPLETED"],
+        default: "DRAFT"
+    }
 },
     {
         timestamps: true,
