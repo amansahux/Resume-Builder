@@ -1,23 +1,23 @@
 export interface GenerateSummaryBody {
-  experienceLevel: string;
+  level: string;
   skills: string[];
   jobTitle: string;
 }
 
 export interface GenerateSkillsBody {
-  experienceLevel: string;
+  level: string;
   jobTitle: string;
 }
 
 export interface GenerateProjectDescriptionBody {
-  experienceLevel: string;
+  level: string;
   projectTitle: string,
   jobTitle: string;
   techStack: string[];
 }
 
 export interface GenerateExperienceDescriptionBody {
-  experienceLevel: string;
+  level: string;
   techStack: string[];
   yearsOfExperience: number;
   jobRole: string;

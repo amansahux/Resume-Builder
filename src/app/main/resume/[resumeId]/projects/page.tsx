@@ -10,6 +10,7 @@ import EmptyStateCard from "../components/EmptyStateCard";
 import ProjectForm from "../components/ProjectForm";
 import LoadingSkeleton from "../components/LoadingSkeleton";
 import { Plus, Trash2, Edit3, Folder, ExternalLink, Star } from "lucide-react";
+import { getSpecificResumeAPI } from "@/apis/resume";
 
 export default function ProjectsPage() {
   const { resume, loading, saveResume } = useWorkspace();
@@ -22,6 +23,10 @@ export default function ProjectsPage() {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [level, setLevel] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
+  const [projectTitle, setProjectTitle] = useState("");
+  const [techStack, setTechStack] = useState<string[]>([]);
 
   useEffect(() => {
     if (resume?.projects) {
@@ -59,6 +64,30 @@ export default function ProjectsPage() {
     }
   };
 
+  useEffect(() => {
+    const fetchResumeData = async () => {
+      try {
+        const response = await getSpecificResumeAPI(resumeId);
+        const resumeData = response?.data || response;
+        const { level, jobTitle, projects } = resumeData;
+        
+        setLevel(level || "");
+        setJobTitle(jobTitle || "");
+        
+        if (projects && projects.length > 0) {
+          setProjectTitle(projects[0].title || "");
+          setTechStack(projects[0].techStack || []);
+        }
+      } catch (err) {
+        console.error("Error fetching resume data", err);
+      }
+    };
+
+    if (resumeId) {
+      fetchResumeData();
+    }
+  }, [resumeId]);
+
   if (loading) {
     return <LoadingSkeleton type="form" />;
   }
@@ -89,10 +118,7 @@ export default function ProjectsPage() {
 
         {/* Form to Add New */}
         {isAdding && (
-          <ProjectForm
-            onSave={handleAdd}
-            onCancel={() => setIsAdding(false)}
-          />
+          <ProjectForm onSave={handleAdd} onCancel={() => setIsAdding(false)} level={level} jobTitle={jobTitle} />
         )}
 
         {/* Projects List */}
@@ -107,6 +133,8 @@ export default function ProjectsPage() {
                   initialData={proj}
                   onSave={handleUpdate}
                   onCancel={() => setEditingIndex(null)}
+                  level={level}
+                  jobTitle={jobTitle}
                 />
               );
             }

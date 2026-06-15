@@ -7,8 +7,8 @@ export async function POST(req: NextRequest) {
 
     try {
         const body: GenerateSkillsBody = await req.json()
-        const { jobTitle, experienceLevel } = body
-        if (!jobTitle || !experienceLevel) return NextResponse.json<IResponse>({
+        const { jobTitle, level } = body
+        if (!jobTitle || !level) return NextResponse.json<IResponse>({
             success: false,
             message: "All fields are required",
         })
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
             ${jobTitle}
             
             Experience Level:
-            ${experienceLevel}
+            ${level}
             
             CRITICAL OUTPUT INSTRUCTIONS:
             

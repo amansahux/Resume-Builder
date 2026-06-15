@@ -8,8 +8,8 @@ export async function POST(req: NextRequest) {
     try {
         const body: GenerateProjectDescriptionBody = await req.json()
 
-        const { jobTitle, projectTitle, techStack, experienceLevel } = body
-        if (!jobTitle || !techStack || !experienceLevel || projectTitle) return NextResponse.json<IResponse>({
+        const { jobTitle, projectTitle, techStack, level } = body
+        if (!jobTitle || !techStack || !level || !projectTitle) return NextResponse.json<IResponse>({
             success: false,
             message: "All fields are required",
         })
@@ -26,7 +26,7 @@ Target Job Role:
 ${jobTitle}
 
 Experience Level:
-${experienceLevel}
+${level}
 
 Technology Stack:
 ${techStack}

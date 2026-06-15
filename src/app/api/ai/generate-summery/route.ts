@@ -7,8 +7,8 @@ export async function POST(req: NextRequest) {
 
     try {
         const body: GenerateSummaryBody = await req.json()
-        const { jobTitle, skills, experienceLevel } = body
-        if (!jobTitle || !skills || !experienceLevel) return NextResponse.json<IResponse>({
+        const { jobTitle, skills, level } = body
+        if (!jobTitle || !skills || !level) return NextResponse.json<IResponse>({
             success: false,
             message: "All fields are required",
         })
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
         ${skills}
         
         Experience Level:
-        ${experienceLevel}
+        ${level}
         
         Rules:
         1. Write ONLY the resume summary.

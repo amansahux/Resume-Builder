@@ -20,7 +20,7 @@ export async function createResumeAPI(body: ICreateResumeBody) {
     return result;
 
 }
-export async function updateResumeAPI(resumeId:string,body:any) {
+export async function updateResumeAPI(resumeId: string, body: any) {
     const response = await fetch(`/api/resume/${resumeId}`, {
         method: "PATCH",
         headers: {
@@ -35,9 +35,8 @@ export async function updateResumeAPI(resumeId:string,body:any) {
         throw new Error(result.message || "Failed to update resume");
     }
     return result;
-    
-}
 
+}
 export async function getResumeAPI(resumeId: string) {
     const response = await fetch(`/api/resume/${resumeId}`, {
         method: "GET",
@@ -53,7 +52,19 @@ export async function getResumeAPI(resumeId: string) {
     }
     return result;
 }
-
+export async function getSpecificResumeAPI(resumeId: string) {
+    const response = await fetch(`/api/resume/${resumeId}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    const result = await response.json();
+    if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to fetch resume");
+    }
+    return result;
+}
 export async function getUserResumesAPI() {
     const response = await fetch("/api/resume", {
         method: "GET",
@@ -68,4 +79,4 @@ export async function getUserResumesAPI() {
         throw new Error(result.message || "Failed to fetch resumes");
     }
     return result;
-}
+}

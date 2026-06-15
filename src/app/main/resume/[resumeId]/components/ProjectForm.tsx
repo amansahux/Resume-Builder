@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { IProjects } from "@/types/resume.types";
 import TechStackInput from "./TechStackInput";
+import { Sparkles } from "lucide-react";
+import { generateProjectDescriptionAPI } from "@/apis/ai";
 
 const projectSchema = z.object({
   title: z.string().min(1, "Project title is required"),
@@ -21,17 +23,23 @@ interface ProjectFormProps {
   initialData?: IProjects | null;
   onSave: (data: IProjects) => void;
   onCancel: () => void;
+  level: string;
+  jobTitle: string;
 }
 
 export default function ProjectForm({
   initialData,
   onSave,
   onCancel,
+  level,
+  jobTitle,
 }: ProjectFormProps) {
   const {
     register,
     handleSubmit,
     control,
+    getValues,
+    setValue,
     formState: { errors },
   } = useForm<ProjectFormInput>({
     resolver: zodResolver(projectSchema),
@@ -43,6 +51,41 @@ export default function ProjectForm({
       techStack: [],
     },
   });
+
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const handleGenerateDescription = async () => {
+    const title = getValues("title");
+    const techStack = getValues("techStack");
+    
+    if (!title || !techStack || techStack.length === 0) {
+      alert("Please enter a project title and tech stack first.");
+      return;
+    }
+
+    try {
+      setIsGenerating(true);
+      const res = await generateProjectDescriptionAPI({
+        level: level || "FRESHER",
+        jobTitle: jobTitle || "Software Engineer",
+        projectTitle: title,
+        techStack,
+      });
+      if (res.success && res.data) {
+        const generatedText = res.data.summary || (typeof res.data === "string" ? res.data : "");
+        setValue("description", generatedText, { 
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to generate description");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   return (
     <form
@@ -114,9 +157,20 @@ export default function ProjectForm({
 
       {/* Description */}
       <div className="space-y-1.5">
-        <label className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
-          Project Description
-        </label>
+        <div className="flex justify-between items-center">
+          <label className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+            Project Description
+          </label>
+          <button
+            type="button"
+            onClick={handleGenerateDescription}
+            disabled={isGenerating}
+            className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-600 bg-brand-200/50 hover:bg-brand-200 py-1 px-2 rounded-md transition-colors disabled:opacity-50 cursor-pointer"
+          >
+            <Sparkles className="w-3 h-3" />
+            {isGenerating ? "Generating..." : "Generate AI Description"}
+          </button>
+        </div>
         <textarea
           rows={3}
           placeholder="Describe your project, key metrics, features and role..."
