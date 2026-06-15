@@ -1,11 +1,12 @@
 import { cookies } from "next/headers"
 import { verifyToken } from "./jwt"
+import { Types } from "mongoose"
 
-export const getCurrentUser = async () => {
+export const getCurrentUser = async ():Promise<Types.ObjectId | null> => {
     const cookieStore = await cookies()
     const token = cookieStore.get("token")?.value
-    if (!token) throw new Error("Unauthorized")
+    if (!token) return null;
     const decode = verifyToken(token)
-    if (!decode) throw new Error("Unauthorized")
+    if (!decode) return null;
      return decode.userId
 }

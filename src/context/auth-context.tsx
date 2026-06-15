@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if (user) {
       if (isAuthRoute || isRootRoute) {
-        router.replace("/main");
+        router.replace("/main/resume");
       }
     } else {
       if (isProtectedRoute || isRootRoute) {
@@ -48,7 +48,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = (userData: User) => {
     setUser(userData);
-    router.replace("/main");
+    router.replace("/main/resume");
   };
 
   const logout = async () => {

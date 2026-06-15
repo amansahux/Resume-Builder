@@ -2,16 +2,35 @@ import { connectToDatabase } from "@/lib/db";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import resumeModel from "@/models/resume.model";
 import { IResponse } from "@/types/response.interface";
+import { Types } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
     try {
         await connectToDatabase();
 
-        const userId = await getCurrentUser()
+        let jobTitle = "";
+        let level = "FRESHER";
+        let userId: Types.ObjectId | null = null;
+        try {
+            userId = await getCurrentUser();
+            if (!userId) {
+                return NextResponse.json<IResponse>({
+                    success: false,
+                    message: "User not found",
+                }, { status: 404 });
+            }
+            const body = await req.json();
+            if (body.jobTitle) jobTitle = body.jobTitle;
+            if (body.experienceLevel) level = body.experienceLevel;
+        } catch (e) {
+           console.error("error in creating resume" , e)
+        }
+
         const newResume = await resumeModel.create({
             user_id: userId,
-            title: "",
+            jobTitle,
+            level,
             summary: "",
             personalInfo: {},
             workExperience: [],

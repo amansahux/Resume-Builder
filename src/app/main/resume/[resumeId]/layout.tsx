@@ -1,0 +1,13 @@
+import React from "react";
+
+export default function ResumeWorkspaceLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="min-h-screen bg-zinc-950 text-zinc-100">
+      {children}
+    </div>
+  );
+}
