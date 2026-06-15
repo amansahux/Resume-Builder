@@ -104,5 +104,8 @@ const resumeSchema = new mongoose.Schema<IResume>({
         timestamps: true,
     })
 
-const resumeModel = mongoose.models.resumes || mongoose.model("resumes", resumeSchema)
-export default resumeModel
+if (mongoose.models && mongoose.models.resumes) {
+    delete mongoose.models.resumes;
+}
+const resumeModel = mongoose.model("resumes", resumeSchema);
+export default resumeModel;
