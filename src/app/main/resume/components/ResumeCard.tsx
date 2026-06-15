@@ -13,7 +13,9 @@ interface ResumeCardProps {
 
 export default function ResumeCard({ resume }: ResumeCardProps) {
   const router = useRouter();
-  const [exportState, setExportState] = useState<"idle" | "loading" | "success">("idle");
+  const [exportState, setExportState] = useState<
+    "idle" | "loading" | "success"
+  >("idle");
 
   const formattedCreatedAt = resume.createdAt
     ? new Date(resume.createdAt).toLocaleDateString("en-US", {
@@ -178,17 +180,25 @@ export default function ResumeCard({ resume }: ResumeCardProps) {
               </div>
             </header>
 
-            ${fullResume.summary ? `
+            ${
+              fullResume.summary
+                ? `
               <section>
                 <div class="section-heading">Professional Summary</div>
                 <div class="summary-text">${fullResume.summary}</div>
               </section>
-            ` : ""}
+            `
+                : ""
+            }
 
-            ${fullResume.workExperience && fullResume.workExperience.length > 0 ? `
+            ${
+              fullResume.workExperience && fullResume.workExperience.length > 0
+                ? `
               <section>
                 <div class="section-heading">Professional Experience</div>
-                ${fullResume.workExperience.map((exp: any) => `
+                ${fullResume.workExperience
+                  .map(
+                    (exp: any) => `
                   <div style="margin-bottom: 10px;">
                     <div class="item-header">
                       <div>
@@ -197,43 +207,74 @@ export default function ResumeCard({ resume }: ResumeCardProps) {
                       </div>
                       <span class="item-date">${exp.startDate} – ${exp.endDate || "Present"}</span>
                     </div>
-                    ${exp.description ? `
+                    ${
+                      exp.description
+                        ? `
                       <ul>
-                        ${exp.description.split("\n").map((line: string) => line.trim()).filter(Boolean).map((line: string) => `
+                        ${exp.description
+                          .split("\n")
+                          .map((line: string) => line.trim())
+                          .filter(Boolean)
+                          .map(
+                            (line: string) => `
                           <li>${line.replace(/^[-•]\s*/, "")}</li>
-                        `).join("")}
+                        `,
+                          )
+                          .join("")}
                       </ul>
-                    ` : ""}
+                    `
+                        : ""
+                    }
                   </div>
-                `).join("")}
+                `,
+                  )
+                  .join("")}
               </section>
-            ` : ""}
+            `
+                : ""
+            }
 
-            ${fullResume.projects && fullResume.projects.length > 0 ? `
+            ${
+              fullResume.projects && fullResume.projects.length > 0
+                ? `
               <section>
                 <div class="section-heading">Projects</div>
-                ${fullResume.projects.map((proj: any) => `
+                ${fullResume.projects
+                  .map(
+                    (proj: any) => `
                   <div style="margin-bottom: 8px;">
                     <div class="item-header">
                       <span class="item-title">${proj.title}</span>
                       ${proj.techStack?.length > 0 ? `<span class="project-tech">${proj.techStack.join(" · ")}</span>` : ""}
                     </div>
                     <div style="font-size: 11px; color: #333333; margin-top: 2px;">${proj.description}</div>
-                    ${proj.githubUrl || proj.liveUrl ? `
+                    ${
+                      proj.githubUrl || proj.liveUrl
+                        ? `
                       <div style="font-size: 9px; margin-top: 2px; color: #6A5D54;">
                         ${proj.githubUrl ? `GitHub: ${proj.githubUrl.replace(/^https?:\/\/(www\.)?/, "")} ` : ""}
                         ${proj.liveUrl ? `Live: ${proj.liveUrl.replace(/^https?:\/\/(www\.)?/, "")}` : ""}
                       </div>
-                    ` : ""}
+                    `
+                        : ""
+                    }
                   </div>
-                `).join("")}
+                `,
+                  )
+                  .join("")}
               </section>
-            ` : ""}
+            `
+                : ""
+            }
 
-            ${fullResume.education && fullResume.education.length > 0 ? `
+            ${
+              fullResume.education && fullResume.education.length > 0
+                ? `
               <section>
                 <div class="section-heading">Education</div>
-                ${fullResume.education.map((edu: any) => `
+                ${fullResume.education
+                  .map(
+                    (edu: any) => `
                   <div style="margin-bottom: 8px;">
                     <div class="item-header">
                       <div>
@@ -243,25 +284,37 @@ export default function ResumeCard({ resume }: ResumeCardProps) {
                       <span class="item-date">${edu.startDate} – ${edu.endDate || "Present"}</span>
                     </div>
                   </div>
-                `).join("")}
+                `,
+                  )
+                  .join("")}
               </section>
-            ` : ""}
+            `
+                : ""
+            }
 
-            ${fullResume.skills && fullResume.skills.length > 0 ? `
+            ${
+              fullResume.skills && fullResume.skills.length > 0
+                ? `
               <section>
                 <div class="section-heading">Technical Skills</div>
                 <div class="skills-list">${fullResume.skills.join("   •   ")}</div>
               </section>
-            ` : ""}
+            `
+                : ""
+            }
 
-            ${fullResume.certifications && fullResume.certifications.length > 0 ? `
+            ${
+              fullResume.certifications && fullResume.certifications.length > 0
+                ? `
               <section>
                 <div class="section-heading">Certifications</div>
                 <ul>
                   ${fullResume.certifications.map((cert: string) => `<li>${cert}</li>`).join("")}
                 </ul>
               </section>
-            ` : ""}
+            `
+                : ""
+            }
           </body>
         </html>
       `;
@@ -293,7 +346,6 @@ export default function ResumeCard({ resume }: ResumeCardProps) {
           setTimeout(() => setExportState("idle"), 3000);
         }
       }, 600);
-
     } catch (err) {
       console.error("PDF generation failed:", err);
       setExportState("idle");
@@ -335,14 +387,18 @@ export default function ResumeCard({ resume }: ResumeCardProps) {
         {/* Timestamps */}
         <div className="pt-3 border-t border-brand-400/20 grid grid-cols-2 gap-2 text-[10px] text-text-secondary/70 font-mono">
           <div className="space-y-0.5">
-            <span className="block uppercase tracking-wider text-[8px] text-text-muted">Created</span>
+            <span className="block uppercase tracking-wider text-[8px] text-text-muted">
+              Created
+            </span>
             <span className="flex items-center gap-1">
               <Calendar className="w-3 h-3 shrink-0 text-brand-dark" />
               {formattedCreatedAt}
             </span>
           </div>
           <div className="space-y-0.5">
-            <span className="block uppercase tracking-wider text-[8px] text-text-muted">Updated</span>
+            <span className="block uppercase tracking-wider text-[8px] text-text-muted">
+              Updated
+            </span>
             <span className="flex items-center gap-1">
               <Calendar className="w-3 h-3 shrink-0 text-brand-dark" />
               {formattedUpdatedAt}
@@ -351,7 +407,11 @@ export default function ResumeCard({ resume }: ResumeCardProps) {
         </div>
 
         {/* Action Buttons */}
-        <ResumeActions onEdit={handleEdit} onExport={handleExport} exportState={exportState} />
+        <ResumeActions
+          onEdit={handleEdit}
+          onExport={handleExport}
+          exportState={exportState}
+        />
       </div>
     </div>
   );

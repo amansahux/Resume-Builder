@@ -130,7 +130,7 @@ export default function CreateResumeModal({
           >
             Begin Your Masterpiece
           </h2>
-          <p className="text-sm text-brand-500/80 leading-relaxed font-sans">
+          <p className="text-sm text-gray-600 leading-relaxed font-sans">
             Define your aspiration. Let our elite AI engine curate a custom
             professional document tailored to your industry standards.
           </p>
@@ -147,7 +147,7 @@ export default function CreateResumeModal({
           <div className="space-y-2">
             <label
               htmlFor="job-title"
-              className="block text-xs font-semibold uppercase tracking-wider text-brand-500/90"
+              className="block text-xs font-semibold uppercase tracking-wider text-black"
             >
               Title
             </label>
@@ -164,7 +164,7 @@ export default function CreateResumeModal({
             />
             <label
               htmlFor="job-title"
-              className="block text-xs font-semibold uppercase tracking-wider text-brand-500/90"
+              className="block text-xs font-semibold uppercase tracking-wider text-black"
             >
               Desired Job Title
             </label>
@@ -182,7 +182,7 @@ export default function CreateResumeModal({
 
           {/* Experience Level Field */}
           <div className="space-y-2">
-            <span className="block text-xs font-semibold uppercase tracking-wider text-brand-500/90">
+            <span className="block text-xs font-semibold uppercase tracking-wider text-black">
               Experience Level
             </span>
             {/* Premium segmented control */}
@@ -208,7 +208,7 @@ export default function CreateResumeModal({
                 className={`relative cursor-pointer z-10 flex-1 py-2 text-xs font-medium tracking-wide uppercase rounded-lg transition-colors duration-300 focus:outline-none ${
                   experienceLevel === "FRESHER"
                     ? "text-black font-semibold"
-                    : "text-brand-500/80 hover:text-black"
+                    : "text-gray-600 hover:text-black"
                 }`}
               >
                 Fresher
@@ -221,7 +221,7 @@ export default function CreateResumeModal({
                 className={`relative cursor-pointer z-10 flex-1 py-2 text-xs font-medium tracking-wide uppercase rounded-lg transition-colors duration-300 focus:outline-none ${
                   experienceLevel === "MID_LEVEL"
                     ? "text-black font-semibold"
-                    : "text-brand-500/80 hover:text-black"
+                    : "text-gray-600 hover:text-black"
                 }`}
               >
                 Mid Level
@@ -234,7 +234,7 @@ export default function CreateResumeModal({
                 className={`relative cursor-pointer z-10 flex-1 py-2 text-xs font-medium tracking-wide uppercase rounded-lg transition-colors duration-300 focus:outline-none ${
                   experienceLevel === "EXPERIENCED"
                     ? "text-black font-semibold"
-                    : "text-brand-500/80 hover:text-black"
+                    : "text-gray-600 hover:text-black"
                 }`}
               >
                 Experienced

@@ -2,34 +2,33 @@ import { connectToDatabase } from "@/lib/db";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import resumeModel from "@/models/resume.model";
 import { IResponse } from "@/types/response.interface";
-import { Types } from "mongoose";
+import { IResume } from "@/types/resume.types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
     try {
         await connectToDatabase();
+        const userId = await getCurrentUser();
+        if (!userId) {
+            return NextResponse.json<IResponse>({
+                success: false,
+                message: "User not found",
+            }, { status: 404 });
+        }
+
         let title = "Untitled Resume";
         let jobTitle = "";
-        let level = "FRESHER";
-        let userId: Types.ObjectId | null = null;
+        let level: "FRESHER" | "MID_LEVEL" | "EXPERIENCED" = "FRESHER";
         try {
-            userId = await getCurrentUser();
-            if (!userId) {
-                return NextResponse.json<IResponse>({
-                    success: false,
-                    message: "User not found",
-                }, { status: 404 });
-            }
-
             const body = await req.json();
             if (body.jobTitle) jobTitle = body.jobTitle;
             if (body.experienceLevel) level = body.experienceLevel;
             if (body.title) title = body.title;
         } catch (e) {
-            console.error("error in creating resume", e)
+            console.error("error in creating resume body parsing", e)
         }
 
-        const newResume = await resumeModel.create({
+        const newResume:IResume = await resumeModel.create({
             user_id: userId,
             title,
             jobTitle,
