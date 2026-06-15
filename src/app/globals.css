@@ -34,30 +34,39 @@ body {
 }
 
 @media print {
-  body {
+  @page {
+    size: A4;
+    margin: 0mm !important;
+  }
+  
+  html, body {
     background-color: #ffffff !important;
-    color: #000000 !important;
-  }
-  /* Hide workspace layout elements during print */
-  header,
-  aside,
-  footer,
-  button,
-  .no-print,
-  div[class*="border-t"],
-  div[class*="bg-white/50"] {
-    display: none !important;
-  }
-  main {
-    padding: 0 !important;
     margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
   }
+
+  /* Hide absolutely everything */
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* Make only the resume document and its content visible */
+  #resume-document,
+  #resume-document * {
+    visibility: visible !important;
+  }
+
+  /* Position it perfectly at the top-left */
   #resume-document {
-    border: none !important;
-    box-shadow: none !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
+    min-height: 100% !important;
     margin: 0 !important;
-    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
   }
 }
