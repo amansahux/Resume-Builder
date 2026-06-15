@@ -56,7 +56,7 @@ export default function ResumeCard({ resume }: ResumeCardProps) {
             <style>
               @page {
                 size: A4;
-                margin: 15mm;
+                margin: 0mm !important;
               }
               body {
                 font-family: 'Arial', sans-serif;
@@ -65,7 +65,7 @@ export default function ResumeCard({ resume }: ResumeCardProps) {
                 line-height: 1.4;
                 font-size: 12px;
                 margin: 0;
-                padding: 0;
+                padding: 20mm 15mm;
               }
               header {
                 border-bottom: 2px solid #D6CCC2;
@@ -173,6 +173,7 @@ export default function ResumeCard({ resume }: ResumeCardProps) {
                 ${fullResume.personalInfo?.mobile ? `<span class="contact-item">☎ ${fullResume.personalInfo.mobile}</span>` : ""}
                 ${fullResume.personalInfo?.location ? `<span class="contact-item">📍 ${fullResume.personalInfo.location}</span>` : ""}
                 ${fullResume.personalInfo?.github ? `<span class="contact-item">❖ ${fullResume.personalInfo.github.replace(/^https?:\/\/(www\.)?/, "")}</span>` : ""}
+                ${fullResume.personalInfo?.linkedIn ? `<span class="contact-item">🔗 ${fullResume.personalInfo.linkedIn.replace(/^https?:\/\/(www\.)?(in\.)?/, "")}</span>` : ""}
                 ${fullResume.personalInfo?.portfolio ? `<span class="contact-item">🌐 ${fullResume.personalInfo.portfolio.replace(/^https?:\/\/(www\.)?/, "")}</span>` : ""}
               </div>
             </header>

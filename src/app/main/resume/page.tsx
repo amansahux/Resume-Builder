@@ -25,6 +25,9 @@ export default function ResumeLandingPage() {
           </div>
 
           <nav className="hidden md:flex items-center space-x-8 text-xs font-semibold uppercase tracking-wider">
+            <a href="#collection" className="text-text-secondary hover:text-text-primary transition-colors duration-200">
+              My Resumes
+            </a>
             <a href="#features" className="text-text-secondary hover:text-text-primary transition-colors duration-200">
               Features
             </a>

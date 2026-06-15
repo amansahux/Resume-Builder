@@ -16,6 +16,7 @@ const personalInfoSchema = z.object({
   mobile: z.string().min(1, "Mobile number is required"),
   location: z.string().min(1, "Location is required"),
   github: z.string().url("Must be a valid URL").or(z.literal("")),
+  linkedIn: z.string().url("Must be a valid URL").or(z.literal("")),
   portfolio: z.string().url("Must be a valid URL").or(z.literal("")),
 });
 
@@ -40,6 +41,7 @@ export default function PersonalInfoPage() {
       mobile: "",
       location: "",
       github: "",
+      linkedIn: "",
       portfolio: "",
     },
   });
@@ -52,6 +54,7 @@ export default function PersonalInfoPage() {
         mobile: resume.personalInfo.mobile || "",
         location: resume.personalInfo.location || "",
         github: resume.personalInfo.github || "",
+        linkedIn: resume.personalInfo.linkedIn || "",
         portfolio: resume.personalInfo.portfolio || "",
       });
     }
@@ -170,6 +173,25 @@ export default function PersonalInfoPage() {
               />
               {errors.github && (
                 <p className="text-xs text-red-500 font-medium">{errors.github.message}</p>
+              )}
+            </div>
+
+            {/* LinkedIn URL */}
+            <div className="space-y-2">
+              <label htmlFor="linkedIn" className="block text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                LinkedIn Profile Link
+              </label>
+              <input
+                id="linkedIn"
+                type="url"
+                placeholder="https://linkedin.com/in/alexandermercer"
+                {...register("linkedIn")}
+                className={`w-full px-4 py-3 rounded-xl border ${
+                  errors.linkedIn ? "border-red-500" : "border-brand-400/50"
+                } bg-white/70 text-text-primary placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all duration-200 text-sm`}
+              />
+              {errors.linkedIn && (
+                <p className="text-xs text-red-500 font-medium">{errors.linkedIn.message}</p>
               )}
             </div>
 
