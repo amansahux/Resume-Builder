@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter, useParams } from "next/navigation";
 import { useWorkspace } from "../workspace-context";
-import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Loader2, Download } from "lucide-react";
 
 interface PageNavigationProps {
   onSave?: () => Promise<void>;
@@ -23,6 +23,7 @@ export default function PageNavigation({
 
   const prevStep = currentStepIndex > 0 ? steps[currentStepIndex - 1] : null;
   const nextStep = currentStepIndex < steps.length - 1 ? steps[currentStepIndex + 1] : null;
+  const isReviewPage = currentStepIndex === steps.length - 1;
 
   const handleBack = () => {
     if (prevStep) {
@@ -38,8 +39,12 @@ export default function PageNavigation({
     }
   };
 
+  const handleExportPDF = () => {
+    window.print();
+  };
+
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-t border-brand-400/20 pt-6 mt-8">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-t border-brand-400/20 pt-6 mt-8 no-print">
       <button
         type="button"
         onClick={handleBack}
@@ -60,6 +65,17 @@ export default function PageNavigation({
           </button>
         )}
 
+        {isReviewPage && (
+          <button
+            type="button"
+            onClick={handleExportPDF}
+            className="flex items-center justify-center gap-2 px-6 py-3 border border-brand-500 hover:border-brand-dark text-brand-dark hover:text-text-primary font-semibold rounded-xl text-sm tracking-wide uppercase shadow-sm transition-all duration-300 cursor-pointer"
+          >
+            <Download className="w-4 h-4" />
+            <span>Export PDF</span>
+          </button>
+        )}
+
         <button
           type="submit"
           onClick={onSave ? (e) => { e.preventDefault(); onSave(); } : undefined}
@@ -73,12 +89,11 @@ export default function PageNavigation({
             </>
           ) : (
             <>
-              <span>{currentStepIndex === steps.length - 1 ? "Finish & Complete" : "Save & Continue"}</span>
+              <span>{isReviewPage ? "Finish & Complete" : "Save & Continue"}</span>
               <ArrowRight className="w-4 h-4" />
             </>
           )}
         </button>
-        <button></button>
       </div>
     </div>
   );
