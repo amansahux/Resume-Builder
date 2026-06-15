@@ -7,9 +7,14 @@ const resumeSchema = new mongoose.Schema<IResume>({
         ref: "users",
         required: true,
     },
-    title: {
+    jobTitle: {
         type: String,
         default: "",
+    },
+    level: {
+        type: String,
+        enum: ["FRESHER", "MID_LEVEL", "EXPERIENCED"],
+        default: "FRESHER",
     },
     summary: {
         type: String,
