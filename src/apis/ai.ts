@@ -1,4 +1,4 @@
-import { GenerateProjectDescriptionBody, GenerateSkillsBody } from "@/types/ai.types";
+import { GenerateProjectDescriptionBody, GenerateSkillsBody, GenerateSummaryBody } from "@/types/ai.types";
 
 export async function generateSkillAPI(body: GenerateSkillsBody) {
 
@@ -36,3 +36,22 @@ export async function generateProjectDescriptionAPI(body: GenerateProjectDescrip
     return result;
 
 }
+export async function generateSummaryAPI(body: GenerateSummaryBody) {
+
+    const response = await fetch("/api/ai/generate-summary", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to generate summary");
+    }
+    return result;
+
+}
+
