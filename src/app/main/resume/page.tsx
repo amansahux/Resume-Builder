@@ -5,6 +5,7 @@ import HeroSection from "./components/HeroSection";
 import FeaturesSection from "./components/FeaturesSection";
 import ShowcaseSection from "./components/ShowcaseSection";
 import CreateResumeModal from "./components/CreateResumeModal";
+import ResumeCollectionSection from "./components/ResumeCollectionSection";
 
 export default function ResumeLandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -156,7 +157,7 @@ export default function ResumeLandingPage() {
         </section>
 
         {/* 5. YOUR RESUMES SECTION (#EDEDE9 background) */}
-        
+        <ResumeCollectionSection onCreateClick={openModal} />
 
         {/* 6. PREMIUM SHOWCASE SECTION (#F5EBE0 background handled inside ShowcaseSection component) */}
         <div id="showcase">

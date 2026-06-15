@@ -53,3 +53,19 @@ export async function getResumeAPI(resumeId: string) {
     }
     return result;
 }
+
+export async function getUserResumesAPI() {
+    const response = await fetch("/api/resume", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to fetch resumes");
+    }
+    return result;
+}
