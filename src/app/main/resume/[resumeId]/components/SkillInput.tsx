@@ -1,20 +1,56 @@
 "use client";
 
 import React, { useState, KeyboardEvent } from "react";
-import { X, Plus } from "lucide-react";
+import { X, Plus, Sparkles } from "lucide-react";
+import { generateSkillAPI } from "@/apis/ai";
 
 interface SkillInputProps {
   value: string[];
   onChange: (value: string[]) => void;
   placeholder?: string;
+  level?: string;
+  jobTitle?: string;
 }
 
 export default function SkillInput({
   value = [],
   onChange,
   placeholder = "Type a skill and press Enter...",
+  level,
+  jobTitle,
 }: SkillInputProps) {
   const [inputValue, setInputValue] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const handleGenerateSkills = async () => {
+    if (!level || !jobTitle) {
+      alert("Job title and experience level are missing. Please complete the previous steps.");
+      return;
+    }
+
+    try {
+      setIsGenerating(true);
+      const res = await generateSkillAPI({ level, jobTitle });
+      if (res.success && res.data) {
+        // Extract array from response depending on structure
+        let newSkills = res.data.skills || res.data;
+        if (!Array.isArray(newSkills) && typeof newSkills === "string") {
+          try { newSkills = JSON.parse(newSkills); } catch (e) {}
+        }
+        
+        if (Array.isArray(newSkills)) {
+          // Merge unique skills
+          const combined = Array.from(new Set([...value, ...newSkills]));
+          onChange(combined);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to generate skills:", err);
+      alert("Failed to generate skills.");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -37,6 +73,21 @@ export default function SkillInput({
 
   return (
     <div className="space-y-3">
+      <div className="flex justify-between items-center mb-2">
+        <label className="block text-xs font-semibold uppercase tracking-wider text-text-secondary">
+          Skills Inventory
+        </label>
+        <button
+          type="button"
+          onClick={handleGenerateSkills}
+          disabled={isGenerating || !level || !jobTitle}
+          className="flex items-center border border-[#9B8467] gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-600 bg-brand-200/50 hover:bg-brand-200 py-1 px-2 rounded-md transition-colors disabled:opacity-50 cursor-pointer"
+        >
+          <Sparkles className="w-3 h-3" />
+          {isGenerating ? "Generating..." : "Generate AI Skills"}
+        </button>
+      </div>
+
       <div className="flex gap-2">
         <input
           type="text"

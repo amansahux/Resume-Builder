@@ -7,6 +7,7 @@ import SectionCard from "../components/SectionCard";
 import PageNavigation from "../components/PageNavigation";
 import SkillInput from "../components/SkillInput";
 import LoadingSkeleton from "../components/LoadingSkeleton";
+import { getSpecificResumeAPI } from "@/apis/resume";
 
 export default function SkillsPage() {
   const { resume, loading, saveResume } = useWorkspace();
@@ -17,12 +18,30 @@ export default function SkillsPage() {
   const [skills, setSkills] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [level, setLevel] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
 
   useEffect(() => {
     if (resume?.skills) {
       setSkills(resume.skills);
     }
   }, [resume]);
+
+  useEffect(() => {
+    const fetchResumeData = async () => {
+      try {
+        const response = await getSpecificResumeAPI(resumeId);
+        const resumeData = response?.data || response;
+        setLevel(resumeData.level || "");
+        setJobTitle(resumeData.jobTitle || "");
+      } catch (err) {
+        console.error("Error fetching resume data", err);
+      }
+    };
+    if (resumeId) {
+      fetchResumeData();
+    }
+  }, [resumeId]);
 
   const handleSaveAndContinue = async () => {
     if (skills.length === 0) {
@@ -58,10 +77,12 @@ export default function SkillsPage() {
         )}
 
         <div className="space-y-4">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-text-secondary">
-            Skills Inventory
-          </label>
-          <SkillInput value={skills} onChange={(newSkills) => { setSkills(newSkills); setError(null); }} />
+          <SkillInput 
+            value={skills} 
+            onChange={(newSkills) => { setSkills(newSkills); setError(null); }} 
+            level={level}
+            jobTitle={jobTitle}
+          />
         </div>
 
         <PageNavigation onSave={handleSaveAndContinue} isSubmitting={saving} />
