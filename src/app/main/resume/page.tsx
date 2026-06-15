@@ -155,12 +155,15 @@ export default function ResumeLandingPage() {
           </div>
         </section>
 
-        {/* 5. PREMIUM SHOWCASE SECTION (#F5EBE0 background handled inside ShowcaseSection component) */}
+        {/* 5. YOUR RESUMES SECTION (#EDEDE9 background) */}
+        
+
+        {/* 6. PREMIUM SHOWCASE SECTION (#F5EBE0 background handled inside ShowcaseSection component) */}
         <div id="showcase">
           <ShowcaseSection />
         </div>
 
-        {/* 6. FINAL CTA SECTION (Gradient using #E3D5CA to #D5BDAF) */}
+        {/* 7. FINAL CTA SECTION (Gradient using #E3D5CA to #D5BDAF) */}
         <section className="py-28 bg-gradient-to-r from-brand-300 to-brand-500 text-text-primary relative overflow-hidden">
           {/* Subtle design patterns */}
           <div className="absolute inset-0 opacity-10 pointer-events-none">

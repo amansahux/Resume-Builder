@@ -58,17 +58,17 @@ export async function POST(req: NextRequest) {
         response.cookies.set("token", token, {
             httpOnly: true,
             sameSite: "lax",
-            maxAge: 60 * 60 
+            maxAge: 60 * 60 * 24
         })
         return response
     } catch (error) {
-  console.error(error);
+        console.error(error);
 
-  return NextResponse.json<IResponse>({
-    success: false,
-    message: "Internal server error",
-  }, {
-    status: 500,
-  });
-}
+        return NextResponse.json<IResponse>({
+            success: false,
+            message: "Internal server error",
+        }, {
+            status: 500,
+        });
+    }
 }
