@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
         try {
             const body = await req.json();
             if (body.jobTitle) jobTitle = body.jobTitle;
-            if (body.experienceLevel) level = body.experienceLevel;
+            if (body.level) level = body.level;
             if (body.title) title = body.title;
         } catch (e) {
             console.error("error in creating resume body parsing", e)

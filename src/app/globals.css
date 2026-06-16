@@ -50,6 +50,9 @@ body {
   body * {
     visibility: hidden !important;
   }
+  *::-webkit-scrollbar{
+    display: none !important;
+  }
 
   /* Make only the resume document and its content visible */
   #resume-document,
