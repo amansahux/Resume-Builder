@@ -28,9 +28,15 @@ body {
   color: #3A322D;
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
-.scrollbar-hide  ::-webkit-scrollbar{
-  display: none;
-  color: blueviolet;
+
+/* Hide scrollbars globally */
+* {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
 }
 
 @media print {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { IResume } from "@/types/resume.types";
-import { getUserResumesAPI } from "@/apis/resume";
+import { getUserResumesAPI, deleteResumeAPI } from "@/apis/resume";
 import ResumeGrid from "./ResumeGrid";
 import ResumeCard from "./ResumeCard";
 import ResumeCardSkeleton from "./ResumeCardSkeleton";
@@ -30,6 +30,19 @@ export default function ResumeCollectionSection({ onCreateClick }: ResumeCollect
       setError("Unable to load your resume collection. Please try again later.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (resumeId: string) => {
+    if (!confirm("Are you sure you want to delete this resume? This action cannot be undone.")) {
+      return;
+    }
+    try {
+      await deleteResumeAPI(resumeId);
+      fetchResumes();
+    } catch (err: any) {
+      console.error("Error deleting resume:", err);
+      alert(err.message || "Failed to delete resume");
     }
   };
 
@@ -69,7 +82,7 @@ export default function ResumeCollectionSection({ onCreateClick }: ResumeCollect
         ) : (
           <ResumeGrid>
             {resumes.map((resume) => (
-              <ResumeCard key={resume._id} resume={resume} />
+              <ResumeCard key={resume._id} resume={resume} onDelete={() => handleDelete(resume._id!)} />
             ))}
           </ResumeGrid>
         )}

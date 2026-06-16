@@ -160,7 +160,7 @@ export default function CreateResumeModal({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Untitled Resume"
-              className="w-full px-4 py-3.5 text-sm uppercase rounded-xl border border-brand-400/50 bg-white/70 text-black placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all duration-200"
+              className="w-full px-4 py-3.5 text-sm  rounded-xl border border-brand-400/50 bg-white/70 text-black placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all duration-200"
             />
             <label
               htmlFor="job-title"
@@ -176,13 +176,13 @@ export default function CreateResumeModal({
               value={jobTitle}
               onChange={(e) => setJobTitle(e.target.value)}
               placeholder="e.g. Frontend Developer"
-              className="w-full px-4 py-3.5 text-sm uppercase rounded-xl border border-brand-400/50 bg-white/70 text-black placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all duration-200"
+              className="w-full px-4 py-3.5 text-sm  rounded-xl border border-brand-400/50 bg-white/70 text-black placeholder-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all duration-200"
             />
           </div>
 
           {/* Experience Level Field */}
           <div className="space-y-2">
-            <span className="block text-xs font-semibold uppercase tracking-wider text-black">
+            <span className="block text-xs font-semibold  tracking-wider text-black">
               Experience Level
             </span>
             {/* Premium segmented control */}

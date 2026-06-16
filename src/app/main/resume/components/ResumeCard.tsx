@@ -9,9 +9,10 @@ import { Calendar, Briefcase, Award } from "lucide-react";
 
 interface ResumeCardProps {
   resume: IResume;
+  onDelete: () => void;
 }
 
-export default function ResumeCard({ resume }: ResumeCardProps) {
+export default function ResumeCard({ resume, onDelete }: ResumeCardProps) {
   const router = useRouter();
   const [exportState, setExportState] = useState<
     "idle" | "loading" | "success"
@@ -410,6 +411,7 @@ export default function ResumeCard({ resume }: ResumeCardProps) {
         <ResumeActions
           onEdit={handleEdit}
           onExport={handleExport}
+          onDelete={onDelete}
           exportState={exportState}
         />
       </div>
