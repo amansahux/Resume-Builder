@@ -8,6 +8,7 @@ import { IProjects } from "@/types/resume.types";
 import TechStackInput from "./TechStackInput";
 import { Sparkles } from "lucide-react";
 import { generateProjectDescriptionAPI } from "@/apis/ai";
+import { useToast } from "@/context/toast-context";
 
 const projectSchema = z.object({
   title: z.string().min(1, "Project title is required"),
@@ -34,6 +35,7 @@ export default function ProjectForm({
   level,
   jobTitle,
 }: ProjectFormProps) {
+  const { showToast } = useToast();
   const {
     register,
     handleSubmit,
@@ -59,7 +61,7 @@ export default function ProjectForm({
     const techStack = getValues("techStack");
     
     if (!title || !techStack || techStack.length === 0) {
-      alert("Please enter a project title and tech stack first.");
+      showToast("Please enter a project title and tech stack first.", "error");
       return;
     }
 
@@ -81,7 +83,7 @@ export default function ProjectForm({
       }
     } catch (err) {
       console.error(err);
-      alert("Failed to generate description");
+      showToast("Failed to generate description.", "error");
     } finally {
       setIsGenerating(false);
     }

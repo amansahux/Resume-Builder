@@ -9,9 +9,11 @@ import LoadingSkeleton from "../components/LoadingSkeleton";
 import { Sparkles } from "lucide-react";
 import { getSpecificResumeAPI } from "@/apis/resume";
 import { generateSummaryAPI } from "@/apis/ai";
+import { useToast } from "@/context/toast-context";
 
 export default function SummaryPage() {
   const { resume, loading, saveResume } = useWorkspace();
+  const { showToast } = useToast();
   const router = useRouter();
   const params = useParams();
   const resumeId = params?.resumeId as string;
@@ -50,7 +52,7 @@ export default function SummaryPage() {
 
   const handleGenerateSummary = async () => {
     if (!level || !jobTitle || skills.length === 0) {
-      alert("Job title, experience level, and skills are missing. Please complete the previous steps first.");
+      showToast("Job title, experience level, and skills are missing. Please complete the previous steps first.", "error");
       return;
     }
 
@@ -67,7 +69,7 @@ export default function SummaryPage() {
       }
     } catch (err) {
       console.error(err);
-      alert("Failed to generate summary");
+      showToast("Failed to generate summary", "error");
     } finally {
       setIsGenerating(false);
     }

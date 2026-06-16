@@ -3,6 +3,7 @@
 import React, { useState, KeyboardEvent } from "react";
 import { X, Plus, Sparkles } from "lucide-react";
 import { generateSkillAPI } from "@/apis/ai";
+import { useToast } from "@/context/toast-context";
 
 interface SkillInputProps {
   value: string[];
@@ -21,10 +22,11 @@ export default function SkillInput({
 }: SkillInputProps) {
   const [inputValue, setInputValue] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const { showToast } = useToast();
 
   const handleGenerateSkills = async () => {
     if (!level || !jobTitle) {
-      alert("Job title and experience level are missing. Please complete the previous steps.");
+      showToast("Job title and experience level are missing. Please complete the previous steps.", "error");
       return;
     }
 
@@ -46,7 +48,7 @@ export default function SkillInput({
       }
     } catch (err) {
       console.error("Failed to generate skills:", err);
-      alert("Failed to generate skills.");
+      showToast("Failed to generate skills.", "error");
     } finally {
       setIsGenerating(false);
     }

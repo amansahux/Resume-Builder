@@ -5,6 +5,8 @@ import ResumeGrid from "./ResumeGrid";
 import ResumeCard from "./ResumeCard";
 import ResumeCardSkeleton from "./ResumeCardSkeleton";
 import ResumeEmptyState from "./ResumeEmptyState";
+import DeleteConfirmationModal from "./DeleteConfirmationModal";
+import { useToast } from "@/context/toast-context";
 
 interface ResumeCollectionSectionProps {
   onCreateClick: () => void;
@@ -14,6 +16,11 @@ export default function ResumeCollectionSection({ onCreateClick }: ResumeCollect
   const [resumes, setResumes] = useState<IResume[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  
+  // Delete Modal state
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; title: string } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const { showToast } = useToast();
 
   const fetchResumes = async () => {
     try {
@@ -33,16 +40,23 @@ export default function ResumeCollectionSection({ onCreateClick }: ResumeCollect
     }
   };
 
-  const handleDelete = async (resumeId: string) => {
-    if (!confirm("Are you sure you want to delete this resume? This action cannot be undone.")) {
-      return;
-    }
+  const handleDeleteClick = (resumeId: string, title: string) => {
+    setDeleteTarget({ id: resumeId, title });
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
     try {
-      await deleteResumeAPI(resumeId);
+      setIsDeleting(true);
+      await deleteResumeAPI(deleteTarget.id);
+      showToast("Resume deleted successfully.", "success");
       fetchResumes();
     } catch (err: any) {
       console.error("Error deleting resume:", err);
-      alert(err.message || "Failed to delete resume");
+      showToast(err.message || "Failed to delete resume", "error");
+    } finally {
+      setIsDeleting(false);
+      setDeleteTarget(null);
     }
   };
 
@@ -82,11 +96,24 @@ export default function ResumeCollectionSection({ onCreateClick }: ResumeCollect
         ) : (
           <ResumeGrid>
             {resumes.map((resume) => (
-              <ResumeCard key={resume._id} resume={resume} onDelete={() => handleDelete(resume._id!)} />
+              <ResumeCard
+                key={resume._id}
+                resume={resume}
+                onDelete={() => handleDeleteClick(resume._id!, resume.title || "Untitled Resume")}
+              />
             ))}
           </ResumeGrid>
         )}
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        isOpen={deleteTarget !== null}
+        onClose={() => setDeleteTarget(null)}
+        onConfirm={confirmDelete}
+        isSubmitting={isDeleting}
+        resumeTitle={deleteTarget?.title}
+      />
     </section>
   );
 }
