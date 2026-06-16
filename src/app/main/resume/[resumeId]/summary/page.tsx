@@ -6,6 +6,9 @@ import { useWorkspace } from "../workspace-context";
 import SectionCard from "../components/SectionCard";
 import PageNavigation from "../components/PageNavigation";
 import LoadingSkeleton from "../components/LoadingSkeleton";
+import { Sparkles } from "lucide-react";
+import { getSpecificResumeAPI } from "@/apis/resume";
+import { generateSummaryAPI } from "@/apis/ai";
 
 export default function SummaryPage() {
   const { resume, loading, saveResume } = useWorkspace();
@@ -16,12 +19,59 @@ export default function SummaryPage() {
   const [summaryText, setSummaryText] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  const [level, setLevel] = useState("");
+  const [jobTitle, setJobTitle] = useState("");
+  const [skills, setSkills] = useState<string[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
     if (resume?.summary) {
       setSummaryText(resume.summary);
     }
   }, [resume]);
+
+  useEffect(() => {
+    const fetchResumeData = async () => {
+      try {
+        const response = await getSpecificResumeAPI(resumeId);
+        const resumeData = response?.data || response;
+        setLevel(resumeData.level || "");
+        setJobTitle(resumeData.jobTitle || "");
+        setSkills(resumeData.skills || []);
+      } catch (err) {
+        console.error("Error fetching resume data", err);
+      }
+    };
+    if (resumeId) {
+      fetchResumeData();
+    }
+  }, [resumeId]);
+
+  const handleGenerateSummary = async () => {
+    if (!level || !jobTitle || skills.length === 0) {
+      alert("Job title, experience level, and skills are missing. Please complete the previous steps first.");
+      return;
+    }
+
+    try {
+      setIsGenerating(true);
+      const res = await generateSummaryAPI({
+        level,
+        jobTitle,
+        skills,
+      });
+      if (res.success && res.data) {
+        const generatedText = res.data.summary || (typeof res.data === "string" ? res.data : "");
+        setSummaryText(generatedText);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to generate summary");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
   const handleSaveAndContinue = async () => {
     try {
@@ -57,9 +107,20 @@ export default function SummaryPage() {
             <label htmlFor="summary-textarea" className="block text-xs font-semibold uppercase tracking-wider text-text-secondary">
               Professional Biography
             </label>
-            <span className="text-xs text-text-muted font-mono">
-              {summaryText.length} characters
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-text-muted font-mono hidden sm:inline-block">
+                {summaryText.length} characters
+              </span>
+              <button
+                type="button"
+                onClick={handleGenerateSummary}
+                disabled={isGenerating || !level || !jobTitle || skills.length === 0}
+                className="flex items-center border border-[#9B8467] gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-600 bg-brand-200/50 hover:bg-brand-200 py-1 px-2 rounded-md transition-colors disabled:opacity-50 cursor-pointer"
+              >
+                <Sparkles className="w-3 h-3" />
+                {isGenerating ? "Generating..." : "Generate AI Summary"}
+              </button>
+            </div>
           </div>
 
           <textarea

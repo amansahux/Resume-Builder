@@ -80,3 +80,16 @@ export async function getUserResumesAPI() {
     }
     return result;
 }
+export async function deleteResumeAPI(resumeId: string) {
+    const response = await fetch(`/api/resume/${resumeId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    const result = await response.json();
+    if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to delete resume");
+    }
+    return result;
+}

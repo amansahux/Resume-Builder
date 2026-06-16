@@ -92,3 +92,27 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ re
         );
     }
 }
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ resumeid: string }> }) {
+    try {
+        await connectToDatabase()
+
+        const userId = await getCurrentUser()
+        const { resumeid } = await params
+        await resumeModel.deleteOne(
+            {
+                _id: resumeid,
+                user_id: userId,
+            }
+        );
+        return NextResponse.json<IResponse>(
+            {
+                success: true,
+                message: "Resume Updated successfully",
+            },
+            { status: 200 }
+        );
+    } catch (error) {
+
+    }
+
+}

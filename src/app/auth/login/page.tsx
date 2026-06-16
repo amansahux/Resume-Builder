@@ -52,10 +52,10 @@ export default function LoginPage() {
         <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-amber-500/10 blur-[120px] pointer-events-none" />
 
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center shadow-lg shadow-amber-500/20">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#E3D5CA] to-[#f1e0ce] flex items-center justify-center shadow-lg shadow-[#E3D5CA]/20">
             <Sparkles className="w-5 h-5 text-zinc-950" />
           </div>
-          <span className="text-lg font-semibold tracking-wider bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent uppercase font-sans">
+          <span className="text-lg font-semibold tracking-wider bg-gradient-to-r from-[#E3D5CA] via-[#f1e0ce] to-[#beac9a] bg-clip-text text-transparent uppercase font-sans">
             ApexResume
           </span>
         </div>
@@ -89,7 +89,7 @@ export default function LoginPage() {
                   placeholder="name@domain.com"
                   {...register("email")}
                   className={`w-full pl-10 pr-4 py-3 bg-zinc-900/50 border ${
-                    errors.email ? "border-red-500/50 focus:border-red-500" : "border-zinc-800 focus:border-amber-500/50"
+                    errors.email ? "border-red-500/50 focus:border-[#E3D5CA]" : "border-zinc-800 focus:border-[#E3D5CA]"
                   } rounded-xl text-zinc-200 placeholder-zinc-600 focus:outline-none transition-all duration-300`}
                 />
               </div>
@@ -116,7 +116,7 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   {...register("password")}
                   className={`w-full pl-10 pr-4 py-3 bg-zinc-900/50 border ${
-                    errors.password ? "border-red-500/50 focus:border-red-500" : "border-zinc-800 focus:border-amber-500/50"
+                    errors.password ? "border-red-500/50 focus:border-[#E3D5CA]" : "border-zinc-800 focus:border-[#E3D5CA]"
                   } rounded-xl text-zinc-200 placeholder-zinc-600 focus:outline-none transition-all duration-300`}
                 />
               </div>
@@ -130,7 +130,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3.5 px-4 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 hover:from-amber-600 hover:to-amber-400 text-zinc-950 font-medium rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-amber-500/10 hover:shadow-amber-500/20 active:scale-[0.99] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
+              className="w-full py-3.5 px-4 bg-[#E3D5CA] hover:bg-[#f1e0ce] transition-all duration-300 hover:text-zinc-900 text-zinc-950 font-medium rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-amber-500/10 hover:shadow-amber-500/20 active:scale-[0.99] transition-all duration-300 disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
             >
               {isSubmitting ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -147,7 +147,7 @@ export default function LoginPage() {
             Don't have an account?{" "}
             <Link
               href="/auth/register"
-              className="text-amber-400 hover:text-amber-300 font-normal transition-colors"
+              className="text-[#E3D5CA] hover:text-white transition-colors"
             >
               Sign up
             </Link>
@@ -170,11 +170,11 @@ export default function LoginPage() {
         />
 
         <div className="absolute bottom-16 left-16 right-16 z-20 max-w-lg">
-          <span className="text-xs uppercase tracking-widest text-amber-400 font-semibold bg-amber-400/10 px-3 py-1.5 rounded-full border border-amber-400/20 backdrop-blur-md">
+          <span className="text-xs uppercase tracking-widest text-[#E3D5CA] font-semibold bg-[#E3D5CA]/10 px-3 py-1.5 rounded-full border border-[#E3D5CA]/20 backdrop-blur-md">
             AI-POWERED OPTIMIZATION
           </span>
           <h1 className="text-4xl sm:text-5xl font-light tracking-tight text-white mt-6 mb-4 leading-tight">
-            Craft a resume that <span className="font-semibold italic text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500">commands</span> attention.
+            Craft a resume that <span className="font-semibold italic text-transparent bg-clip-text bg-gradient-to-r from-[#E3D5CA]-200 to-[#E3D5CA]">commands</span> attention.
           </h1>
           <p className="text-zinc-300 font-light leading-relaxed">
             Join thousands of professionals securing interviews at top-tier organizations using our luxury resume layouts and real-time AI optimization tools.
