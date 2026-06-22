@@ -124,10 +124,10 @@ const printHTML = `
       ${
         r.personalInfo?.email
           ? `
-        <span class="flex items-center gap-1">
+        <a href="mailto:${r.personalInfo.email}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1" style="color:inherit;text-decoration:none;">
           ${ICON.mail}
           ${r.personalInfo.email}
-        </span>
+        </a>
       `
           : ""
       }
@@ -135,10 +135,10 @@ const printHTML = `
       ${
         r.personalInfo?.mobile
           ? `
-        <span class="flex items-center gap-1">
+        <a href="tel:${r.personalInfo.mobile}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1" style="color:inherit;text-decoration:none;">
           ${ICON.phone}
           ${r.personalInfo.mobile}
-        </span>
+        </a>
       `
           : ""
       }
