@@ -157,10 +157,10 @@ const printHTML = `
       ${
         r.personalInfo?.github
           ? `
-        <span class="flex items-center gap-1">
+        <a href="${r.personalInfo.github}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1" style="color:inherit;text-decoration:none;">
           ${ICON.github}
           ${r.personalInfo?.github?.replace(/^https?:\/\/(www\.)?/, "")}
-        </span>
+        </a>
       `
           : ""
       }
@@ -168,13 +168,13 @@ const printHTML = `
       ${
         r.personalInfo?.linkedIn
           ? `
-        <span class="flex items-center gap-1">
+        <a href="${r.personalInfo.linkedIn}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1" style="color:inherit;text-decoration:none;">
           ${ICON.linkedin}
           ${r.personalInfo?.linkedIn?.replace(
             /^https?:\/\/(www\.)?(in\.)?/,
             ""
           )}
-        </span>
+        </a>
       `
           : ""
       }
@@ -182,13 +182,13 @@ const printHTML = `
       ${
         r.personalInfo?.portfolio
           ? `
-        <span class="flex items-center gap-1">
+        <a href="${r.personalInfo.portfolio}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1" style="color:inherit;text-decoration:none;">
           ${ICON.globe}
           ${r.personalInfo?.portfolio?.replace(
             /^https?:\/\/(www\.)?/,
             ""
           )}
-        </span>
+        </a>
       `
           : ""
       }
@@ -326,13 +326,13 @@ const printHTML = `
 
                 ${
                   proj.githubUrl
-                    ? `<span>GitHub ↗</span>`
+                    ? `<a href="${proj.githubUrl}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">GitHub ↗</a>`
                     : ""
                 }
 
                 ${
                   proj.liveUrl
-                    ? `<span>Live Demo ↗</span>`
+                    ? `<a href="${proj.liveUrl}" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:none;">Live Demo ↗</a>`
                     : ""
                 }
 
